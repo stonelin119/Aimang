@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block link %}
+    <!-- Bootstrap time Picker -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='AdminLTE-2.4.5/plugins/timepicker/bootstrap-timepicker.min.css') }}">
+{% endblock %}
+{% block script %}
+    <!-- bootstrap time picker -->
+    <script src="{{ url_for('static', filename='AdminLTE-2.4.5/plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+    <!-- InputMask -->
+    <script src="{{ url_for('static', filename='AdminLTE-2.4.5/plugins/input-mask/jquery.inputmask.js') }}"></script>
+    <script src="{{ url_for('static', filename='AdminLTE-2.4.5/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.timepicker').timepicker({
+                showInputs: false,
+                defaultTime: '3:00',
+                showMeridian: false,
+            });
+            //Money Euro
+            $('[data-mask]').inputmask();
+            //Redirect to homepage
+            $('#cancel').click(function () {
+                window.location.href = "{{ url_for('log.index') }}";
+            })
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">更新设置</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        {% if upgrade_setting %}
+            <form role="form" action="{{ url_for('setting.update_upgrade', id=upgrade_setting.id) }}"
+                  method="post">
+        {% else %}
+            <form role="form" action="{{ url_for('setting.create_upgrade') }}" method="post">
+        {% endif %}
+
+        <div class="box-body">
+            <!-- IP mask -->
+            <div class="form-group">
+                <label>规则库更新地址:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-laptop"></i>
+                    </div>
+                    <input name="rule_upload_address" type="text" class="form-control"
+                           data-inputmask="'alias': 'ip'" data-mask
+                           {% if upgrade_setting %}value={{ upgrade_setting.rule_upload_address }}{% endif %}>
+                </div>
+                <!-- /.input group -->
+            </div>
+            <div class="bootstrap-timepicker">
+                <div class="form-group">
+                    <label>规则库自动更新时间:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <input name="rule_upgrade_time" type="text" class="form-control timepicker"
+                               {% if upgrade_setting %}value={{ upgrade_setting.rule_upgrade_time }}{% endif %}>
+                    </div>
+                    <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+            </div>
+            <div class="form-group">
+                <label>威胁数据上传地址:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-laptop"></i>
+                    </div>
+                    <input name="threat_upload_address" type="text" class="form-control"
+                           data-inputmask="'alias': 'ip'" data-mask
+                           {% if upgrade_setting %}value={{ upgrade_setting.threat_upload_address }}{% endif %}>
+                </div>
+                <!-- /.input group -->
+            </div>
+            <div class="bootstrap-timepicker">
+                <div class="form-group">
+                    <label>威胁情报自动上传时间:</label>
+
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <input name="threat_upgrade_time" type="text" class="form-control timepicker"
+                               {% if upgrade_setting %}value={{ upgrade_setting.threat_upgrade_time }}{% endif %}>
+                    </div>
+                    <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <button id="cancel" type="button" class="btn btn-default">取消</button>
+            <button type="submit" class="btn btn-info pull-right">保存</button>
+        </div>
+        <!-- /.box-footer -->
+        </form>
+    </div>
+{% endblock %}

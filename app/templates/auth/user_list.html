@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">用户管理</h3>
+                    <div class="box-tools">
+                        <a class="action" href="{{ url_for('auth.register') }}">
+                            <span class="label label-primary">Add New</span>
+                        </a>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <table class="table table-striped">
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th style="width: 40px">状态</th>
+                            <th style="width: 100px">操作</th>
+                        </tr>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ loop.index }}.</td>
+                                <td>{{ user.user_name }}</td>
+                                <td>{{ user.email }}</td>
+                                {% if user.status == 0 %}
+                                    <td><span class="badge bg-green">正常</span></td>
+                                {% else %}
+                                    <td><span class="badge bg-red">冻结</span></td>
+                                {% endif %}
+                                <td>
+                                    <a class="action" href="{{ url_for('auth.update', id=user.id) }}">
+                                        <span class="label label-warning">修改</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+{% endblock %}

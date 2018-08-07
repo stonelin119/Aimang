@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block script %}
+    <script src="{{ url_for('static', filename='gauge/gauge.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $("button").click(function () {
+                $.post("{{ url_for('setting.run_process') }}",
+                    {
+                        process_name: this.value,
+                    });
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">系统运行</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label>外网</label>
+                        <canvas id="gauge_extranet"></canvas>
+                        <script>
+                            var gaugePS = new RadialGauge({
+                                renderTo: 'gauge_extranet',
+                                width: 300,
+                                height: 300,
+                                units: '已运行/天',
+                                minValue: 0,
+                                maxValue: 50,
+                                majorTicks: [
+                                    '0',
+                                    '5',
+                                    '10',
+                                    '15',
+                                    '20',
+                                    '25',
+                                    '30',
+                                    '35',
+                                    '40',
+                                    '45',
+                                    '50'
+                                ],
+                                minorTicks: 2,
+                                ticksAngle: 270,
+                                startAngle: 45,
+                                strokeTicks: true,
+                                highlights: [
+                                    {from: 25, to: 45, color: 'rgba(78,   78, 76, 0.5)'},
+                                    {from: 45, to: 50, color: 'rgba(225, 7, 23, 0.75)'}
+                                ],
+                                valueInt: 1,
+                                valueDec: 0,
+                                colorPlate: "#fff",
+                                colorMajorTicks: "#686868",
+                                colorMinorTicks: "#686868",
+                                colorTitle: "#000",
+                                colorUnits: "#000",
+                                colorNumbers: "#686868",
+                                valueBox: true,
+                                colorValueText: "#000",
+                                colorValueBoxRect: "#fff",
+                                colorValueBoxRectEnd: "#fff",
+                                colorValueBoxBackground: "#fff",
+                                colorValueBoxShadow: false,
+                                colorValueTextShadow: false,
+                                colorNeedleShadowUp: true,
+                                colorNeedleShadowDown: false,
+                                colorNeedle: "rgba(200, 50, 50, .75)",
+                                colorNeedleEnd: "rgba(200, 50, 50, .75)",
+                                colorNeedleCircleOuter: "rgba(200, 200, 200, 1)",
+                                colorNeedleCircleOuterEnd: "rgba(200, 200, 200, 1)",
+                                borderShadowWidth: 0,
+                                borders: true,
+                                borderInnerWidth: 0,
+                                borderMiddleWidth: 0,
+                                borderOuterWidth: 5,
+                                colorBorderOuter: "#fafafa",
+                                colorBorderOuterEnd: "#cdcdcd",
+                                needleType: "arrow",
+                                needleWidth: 2,
+                                needleCircleSize: 7,
+                                needleCircleOuter: true,
+                                needleCircleInner: false,
+                                animationDuration: 1500,
+                                animationRule: "dequint",
+                                fontNumbers: "Verdana",
+                                fontTitle: "Verdana",
+                                fontUnits: "Verdana",
+                                fontValue: "Led",
+                                fontValueStyle: 'italic',
+                                fontNumbersSize: 20,
+                                fontNumbersStyle: 'italic',
+                                fontNumbersWeight: 'bold',
+                                fontTitleSize: 24,
+                                fontUnitsSize: 22,
+                                fontValueSize: 50,
+                                animatedValue: true
+                            });
+                            gaugePS.draw();
+                            gaugePS.value = "{{ proc_run_time['extrannet_proc_run_time'] }}";
+                        </script>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label>内网</label>
+                        <canvas id="gauge_intranet"></canvas>
+                        <script>
+                            var gaugePS = new RadialGauge({
+                                renderTo: 'gauge_intranet',
+                                width: 300,
+                                height: 300,
+                                units: '已运行/天',
+                                minValue: 0,
+                                maxValue: 50,
+                                majorTicks: [
+                                    '0',
+                                    '5',
+                                    '10',
+                                    '15',
+                                    '20',
+                                    '25',
+                                    '30',
+                                    '35',
+                                    '40',
+                                    '45',
+                                    '50'
+                                ],
+                                minorTicks: 2,
+                                ticksAngle: 270,
+                                startAngle: 45,
+                                strokeTicks: true,
+                                highlights: [
+                                    {from: 25, to: 45, color: 'rgba(78,   78, 76, 0.5)'},
+                                    {from: 45, to: 50, color: 'rgba(225, 7, 23, 0.75)'}
+                                ],
+                                valueInt: 1,
+                                valueDec: 0,
+                                colorPlate: "#fff",
+                                colorMajorTicks: "#686868",
+                                colorMinorTicks: "#686868",
+                                colorTitle: "#000",
+                                colorUnits: "#000",
+                                colorNumbers: "#686868",
+                                valueBox: true,
+                                colorValueText: "#000",
+                                colorValueBoxRect: "#fff",
+                                colorValueBoxRectEnd: "#fff",
+                                colorValueBoxBackground: "#fff",
+                                colorValueBoxShadow: false,
+                                colorValueTextShadow: false,
+                                colorNeedleShadowUp: true,
+                                colorNeedleShadowDown: false,
+                                colorNeedle: "rgba(200, 50, 50, .75)",
+                                colorNeedleEnd: "rgba(200, 50, 50, .75)",
+                                colorNeedleCircleOuter: "rgba(200, 200, 200, 1)",
+                                colorNeedleCircleOuterEnd: "rgba(200, 200, 200, 1)",
+                                borderShadowWidth: 0,
+                                borders: true,
+                                borderInnerWidth: 0,
+                                borderMiddleWidth: 0,
+                                borderOuterWidth: 5,
+                                colorBorderOuter: "#fafafa",
+                                colorBorderOuterEnd: "#cdcdcd",
+                                needleType: "arrow",
+                                needleWidth: 2,
+                                needleCircleSize: 7,
+                                needleCircleOuter: true,
+                                needleCircleInner: false,
+                                animationDuration: 1500,
+                                animationRule: "dequint",
+                                fontNumbers: "Verdana",
+                                fontTitle: "Verdana",
+                                fontUnits: "Verdana",
+                                fontValue: "Led",
+                                fontValueStyle: 'italic',
+                                fontNumbersSize: 20,
+                                fontNumbersStyle: 'italic',
+                                fontNumbersWeight: 'bold',
+                                fontTitleSize: 24,
+                                fontUnitsSize: 22,
+                                fontValueSize: 50,
+                                animatedValue: true
+                            });
+                            gaugePS.draw();
+                            gaugePS.value = "{{ proc_run_time['intrannet_proc_run_time'] }}";
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-xs-6">
+                    {% if not proc_run_time['extrannet_proc_run_time'] %}
+                        <button id="run_extrannet_proc" value="extrannet_proc" class="btn btn-info">运行</button>
+                    {% endif %}
+                </div>
+                <div class="col-xs-6">
+                    {% if not proc_run_time['extrannet_proc_run_time'] %}
+                        <button id="run_intrannet_proc" value="extrannet_proc" type="submit" class="btn btn-info">运行
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- /.box-footer -->
+
+        <!-- /.box-body -->
+    </div>
+{% endblock %}

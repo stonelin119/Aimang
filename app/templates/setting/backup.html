@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">数据备份设置</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        {% if backup_setting %}
+            <form action="{{ url_for('setting.update_backup', id=backup_setting.id) }}" class="form-horizontal"
+                  method="post">
+        {% else %}
+            <form action="{{ url_for('setting.create_backup') }}" class="form-horizontal" method="post">
+        {% endif %}
+        <div class="box-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">每隔</label>
+                <select class="col-sm-5" name="step" id="step" value="40">
+                    <option value="10"
+                            {% if backup_setting and backup_setting.step == 10 %}selected="selected"{% endif %}>10天
+                    </option>
+                    <option value="20"
+                            {% if backup_setting and backup_setting.step == 20 %}selected="selected"{% endif %}>20天
+                    </option>
+                    <option value="30"
+                            {% if backup_setting and backup_setting.step == 30 %}selected="selected"{% endif %}>30天
+                    </option>
+                </select>
+                <label class="col-sm-2 control-label">备份一次数据</label>
+            </div>
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+            <a href="{{ url_for('log.index') }}">
+                <button type="button" class="btn btn-default">取消</button>
+            </a>
+            <button type="submit" class="btn btn-info pull-right">保存</button>
+        </div>
+        <!-- /.box-footer -->
+        </form>
+    </div>
+
+{% endblock %}

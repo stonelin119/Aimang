@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            //Redirect to homepage
+            $('#cancel').click(function () {
+                window.location.href = "{{ url_for('log.index') }}";
+            })
+            //Add New Email
+            $("#add_email").click(function () {
+                $.post("{{ url_for('setting.create_email') }}",
+                    {
+                        email: $("#email").val()
+                    },
+                    function (data, status) {
+                        window.location.reload();
+                    });
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">报警设置</h3>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        {% if warning_setting %}
+            <form role="form" action="{{ url_for('setting.update_warning', id=warning_setting.id) }}"
+                  method="post">
+        {% else %}
+            <form role="form" action="{{ url_for('setting.create_warning') }}" method="post">
+        {% endif %}
+
+        <div class="box-body">
+            <!-- IP mask -->
+            <div class="form-group">
+                <label>警告级别:</label>
+                <select class="form-control" name="level" id="level">
+                    <option value="0" {% if warning_setting and warning_setting.level == 0 %}selected="selected"{% endif %}>1级
+                    </option>
+                    <option value="1" {% if warning_setting and warning_setting.level == 1 %}selected="selected"{% endif %}>2级
+                    </option>
+                    <option value="2" {% if warning_setting and warning_setting.level == 2 %}selected="selected"{% endif %}>3级
+                    </option>
+                    <option value="3" {% if warning_setting and warning_setting.level == 3 %}selected="selected"{% endif %}>4级
+                    </option>
+                    <option value="4" {% if warning_setting and warning_setting.level == 4 %}selected="selected"{% endif %}>5级
+                    </option>
+                    <option value="5" {% if warning_setting and warning_setting.level == 5 %}selected="selected"{% endif %}>6级
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>警告标题:</label>
+                <input name="title" type="text" class="form-control" placeholder="Enter ..."
+                       {% if warning_setting %}value={{ warning_setting.title }}{% endif %}>
+            </div>
+
+            <div class="form-group">
+                <label>报警邮箱:</label>
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">邮箱列表</h3>
+                        <div class="box-tools">
+                            <div class="input-group input-group-sm" style="width: 300px;">
+                                <input id="email" type="text" name="email" class="form-control pull-right"
+                                       placeholder="email ...">
+                                <div class="input-group-btn">
+                                    <button id="add_email" type="button" class="btn btn-default"><i
+                                            class="fa fa-user-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding">
+                        <table class="table table-striped">
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>邮箱</th>
+                                <th style="width: 100px">操作</th>
+                            </tr>
+                            {% for email in emails %}
+                                <tr>
+                                    <td>{{ loop.index }}.</td>
+                                    <td>{{ email.email }}</td>
+                                    <td>
+                                        <a class="action" href="{{ url_for('setting.delete_email', id=email.id) }}">
+                                            <span class="label label-danger">删除</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <button id="cancel" type="button" class="btn btn-default">取消</button>
+                <button type="submit" class="btn btn-info pull-right">保存</button>
+            </div>
+            <!-- /.box-footer -->
+        </form>
+    </div>
+{% endblock %}
